@@ -1,0 +1,10 @@
+<div class="artboard bg-base-300 flex gap-8 p-2 flex-col jistify-end phone-1">
+  <app-chat
+    #chatBox
+    [myId]="myId"
+    [messages]="messages()"
+    class="flex-1"
+    (messageDeleted)="deleteMessage($event)"
+  ></app-chat>
+  <app-chat-input [myId]="myId" [(value)]="newMessage"></app-chat-input>
+</div>

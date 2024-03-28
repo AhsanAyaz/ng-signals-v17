@@ -1,0 +1,22 @@
+:host {
+  @apply block max-h-fit overflow-auto;
+
+  .chat {
+    @apply mb-4;
+    &__actions {
+      @apply hidden transition-all duration-200;
+    }
+    &:hover {
+      .chat__actions {
+        @apply flex;
+      }
+    }
+    &.chat-start {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: start;
+      padding-left: 1rem;
+      align-items: flex-end;
+    }
+  }
+}
