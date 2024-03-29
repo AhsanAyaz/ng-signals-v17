@@ -10,8 +10,9 @@ import {
 } from '@angular/core';
 import { ChatComponent } from '../components/chat/chat.component';
 import { ChatInputComponent } from '../components/chat-input/chat-input.component';
-import { ChatMessage } from '../message.interface';
 import { v4 as uuidv4 } from 'uuid';
+import { ChatMessage } from '../message.interface';
+
 @Component({
   selector: 'app-room',
   standalone: true,
@@ -23,9 +24,24 @@ import { v4 as uuidv4 } from 'uuid';
 export class RoomComponent {
   myId = uuidv4();
   contactId = uuidv4();
-  chatBox = viewChild.required<ChatComponent>('chatBox');
-  cdRef = inject(ChangeDetectorRef);
+  chatComponent = viewChild.required(ChatComponent);
   newMessage = signal<ChatMessage | null>(null);
+  cdRef = inject(ChangeDetectorRef);
+  newMessageChange = effect(
+    () => {
+      console.log('newMessage changed', this.newMessage());
+      if (!this.newMessage()) {
+        return;
+      }
+      this.messages.update((messages) => [...messages, this.newMessage()!]);
+      this.cdRef.detectChanges();
+      this.scrollChatToBottom();
+      this.newMessage.set(null);
+    },
+    {
+      allowSignalWrites: true,
+    }
+  );
   messages = signal<ChatMessage[]>([
     {
       text: 'Hey',
@@ -115,29 +131,14 @@ export class RoomComponent {
     });
   }
 
-  newMessageEffect = effect(
-    () => {
-      if (!this.newMessage()) {
-        return;
-      }
-      this.messages.update((messages) => [...messages, this.newMessage()!]);
-      this.cdRef.detectChanges();
-      this.scrollChatToBottom();
-      this.newMessage.set(null);
-    },
-    {
-      allowSignalWrites: true,
-    }
-  );
-
-  deleteMessage(messageId: string) {
+  removeMessage(messageId: string) {
     this.messages.update((messages) =>
       messages.filter((msg) => msg.id !== messageId)
     );
   }
 
   scrollChatToBottom() {
-    const el = this.chatBox().scrollContainer as HTMLElement;
+    const el = this.chatComponent().scrollContainer as HTMLElement;
     el.scrollTo({
       top: el.scrollHeight,
     });

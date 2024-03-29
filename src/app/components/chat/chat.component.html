@@ -18,10 +18,7 @@
 
   @if (message.userId === myId()) {
   <div class="chat__actions px-2">
-    <button
-      (click)="deleteMessage(message)"
-      class="btn btn-sm btn-circle btn-outline btn-ghost"
-    >
+    <button (click)="deleteMessage(message.id)" class="btn btn-sm btn-circle btn-outline btn-ghost">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

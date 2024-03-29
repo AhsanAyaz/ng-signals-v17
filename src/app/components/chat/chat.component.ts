@@ -18,11 +18,11 @@ export class ChatComponent {
     return this.elRef.nativeElement;
   }
 
-  deleteMessage(message: ChatMessage) {
-    const conf = confirm('You sure you want to delete it?');
-    if (!conf) {
+  deleteMessage(messageId: string) {
+    const resp = confirm('Do you want to delete this message?');
+    if (!resp) {
       return;
     }
-    this.messageDeleted.emit(message.id);
+    this.messageDeleted.emit(messageId);
   }
 }
