@@ -1,9 +1,7 @@
-<form (ngSubmit)="sendMessage(inputVal(), $event)" class="w-full flex gap-2 items-center">
+<form class="w-full flex gap-2 items-center">
   <textarea
-    (keyup.enter)="sendMessage(inputVal(), $event)"
     name="message"
     rows="1"
-    [(ngModel)]="inputVal"
     class="resize-none textarea text-base-content textarea-bordered w-full"
     placeholder="Say something..."
   ></textarea>
