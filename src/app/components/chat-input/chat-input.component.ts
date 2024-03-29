@@ -10,4 +10,19 @@ import { v4 as uuidv4 } from 'uuid';
   templateUrl: './chat-input.component.html',
   styleUrl: './chat-input.component.scss',
 })
-export class ChatInputComponent {}
+export class ChatInputComponent {
+  value = model.required<ChatMessage | null>();
+  myId = input.required<string>();
+  inputVal = signal<string>('');
+
+  sendMessage(message: string, $event: Event) {
+    $event.preventDefault();
+    this.value.set({
+      text: message,
+      id: uuidv4(),
+      userId: this.myId(),
+      createdAt: Date.now(),
+    });
+    this.inputVal.set('');
+  }
+}
